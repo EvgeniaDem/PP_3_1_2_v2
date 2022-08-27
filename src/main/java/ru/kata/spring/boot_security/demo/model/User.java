@@ -4,11 +4,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
-@Data
-@Entity
+@Data                           // для каждого поля создаст getters & setters + метод toString + equals() + hashCode()
+@Entity                         // означает, что данный клас является сущностью (в отличии от joint-таблицы!)
 @NoArgsConstructor
 @Table(name = "users")
 public class User {
@@ -25,9 +25,16 @@ public class User {
 
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
-            name = "User_Roles",
-            joinColumns = { @JoinColumn(name = "user_id") },
-            inverseJoinColumns = { @JoinColumn(name = "role_id") }
+            name = "user_role",
+            joinColumns = {@JoinColumn(name = "user_id")},       // показываем, с помощью какого столбца таблица user_role связана с таблицей user
+            inverseJoinColumns = {@JoinColumn(name = "role_id")}  // показываем, с помощью какого столбца таблица user_role связана с таблицей role
     )
-    private Set<Role> roles;
+    private List<Role> roles;                                   // означает, что у каждого юзера может быть List ролей
+
+    public void addRoleToUser(Role role) {
+        if (roles == null) {
+            roles = new ArrayList<>();
+        }
+        roles.add(role);
+    }
 }

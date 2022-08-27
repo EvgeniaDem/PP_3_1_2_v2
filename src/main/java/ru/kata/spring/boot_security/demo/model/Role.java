@@ -4,7 +4,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -20,5 +21,20 @@ public class Role {
     private String role;
 
     @ManyToMany(mappedBy = "roles")
-    private Set<User> users;
+    private List<User> users;                      // это значит, что у каждой роли может быть много (List) юзеров
+
+/*    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(
+            name = "user_role",
+            joinColumns = {@JoinColumn(name = "role_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id")}
+    )
+    private List<User> users;*/
+
+    public void addUserToRole(User user) {
+        if (users == null) {
+            users = new ArrayList<>();
+        }
+        users.add(user);
+    }
 }
