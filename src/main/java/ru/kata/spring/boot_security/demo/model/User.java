@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data                           // для каждого поля создаст getters & setters + метод toString + equals() + hashCode()
-@Entity                         // означает, что данный клас является сущностью (в отличии от joint-таблицы!)
+@Entity                         // означает, что данный клас является сущностью (в отличии от join-таблицы!)
 @NoArgsConstructor
 @Table(name = "users")
 public class User {
@@ -23,13 +23,16 @@ public class User {
     @Column
     private String surname;
 
+    @Column
+    private String password;
+
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
             name = "user_role",
-            joinColumns = {@JoinColumn(name = "user_id")},       // показываем, с помощью какого столбца таблица user_role связана с таблицей user
+            joinColumns = {@JoinColumn(name = "user_id")},        // показываем, с помощью какого столбца таблица user_role связана с таблицей user
             inverseJoinColumns = {@JoinColumn(name = "role_id")}  // показываем, с помощью какого столбца таблица user_role связана с таблицей role
     )
-    private List<Role> roles;                                   // означает, что у каждого юзера может быть List ролей
+    private List<Role> roles;                                     // означает, что у каждого юзера может быть List ролей
 
     public void addRoleToUser(Role role) {
         if (roles == null) {
