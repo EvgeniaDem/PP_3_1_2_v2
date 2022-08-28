@@ -33,7 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {              // метод конфигурирует сам Spring security (какая страница отвечает за вход, а какая за ошибки и т.д.)
         http    .csrf().disable()                                               // также в этом методе конфигурируем авторизацию
                 .authorizeRequests()                                            // вызов метода означает, что все постутпающие запросы должны проходить авторизацию
-                .antMatchers("/", "/index", "/api/error", "/api/create").permitAll()   // устанавливаем end points, с которых должен быть доступен всем без пароля
+                .antMatchers("/", "/index", "/api/create").permitAll()   // устанавливаем end points, с которых должен быть доступен всем без пароля
                 .anyRequest().authenticated()                                   // означает, что для любых запросов, не указанных в antMatchers(), требуется аутентификация
                 .and()                                                          // до end() настраивается авторизация, после end() настраивается страница login
                 .formLogin().successHandler(successUserHandler)                 // настраиваем свою форму для пользователя

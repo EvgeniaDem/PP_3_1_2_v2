@@ -30,7 +30,9 @@ public class UserController {
         return "hello";
     }
 
-    @GetMapping("/login")          // добавила я
+    // метод для регистрации нового пользователя (добавление в таблицу)
+
+    @GetMapping("/login")          // Метод для аутентификции пользовател. Добавила я, пока не работает.
     public String loginPage() {
         return "login";
     }

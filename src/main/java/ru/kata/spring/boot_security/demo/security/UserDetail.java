@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.User;
 
 import java.util.Collection;
+import java.util.Collections;
 
 public class UserDetail implements UserDetails { // это - класс-обертка над классом User, позволяет работать не напрямую с User. Но этот класс предоставляет всю инфу о User
     private final User user;
@@ -15,7 +16,7 @@ public class UserDetail implements UserDetails { // это - класс-обер
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public Collection<? extends GrantedAuthority> getAuthorities() {  //Spring Security не различает ROLE и Authorities
         return null;
     }
 
