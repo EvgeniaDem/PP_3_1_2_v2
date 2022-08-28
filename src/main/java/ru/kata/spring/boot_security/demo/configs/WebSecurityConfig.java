@@ -1,40 +1,35 @@
 package ru.kata.spring.boot_security.demo.configs;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import ru.kata.spring.boot_security.demo.security.AuthProviderImpl;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import ru.kata.spring.boot_security.demo.service.UserDetailService;
 
 @Configuration
 @EnableWebSecurity
 // по этой аннотации Спринг понимает, что это конфиг класс для Spring Security
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {   // почему зачеркнуто? а Алишева это есть
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final SuccessUserHandler successUserHandler;
 
-    private final AuthenticationProvider authProvider;
+    private final UserDetailService userDetailService;
 
-    public WebSecurityConfig(SuccessUserHandler successUserHandler, AuthProviderImpl authProvider) {
+    public WebSecurityConfig(SuccessUserHandler successUserHandler, UserDetailService userDetailService) {
         this.successUserHandler = successUserHandler;
-        this.authProvider = authProvider;
+        this.userDetailService = userDetailService;
     }
 
-    // этот метод добавила я (по Алишеву):
-    protected void config(AuthenticationManagerBuilder auth) {
-        auth.authenticationProvider(authProvider);
+    protected void config(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailService);
     }
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {   // этот метод настраивает аутентификацию
+    protected void configure(HttpSecurity http) throws Exception {              // этот метод настраивает аутентификацию
         http
                 .authorizeRequests()
                 .antMatchers("/", "/index", "/api/create").permitAll()   // endpoint create должен быть доступен всем без пароля
@@ -45,5 +40,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {   // по�
                 .and()
                 .logout()
                 .permitAll();
+    }
+
+    @Bean
+    public PasswordEncoder getPasswordEncoder() {    // показываем Spring Security с помощью какого алгоритма шифруем пароли
+        return NoOpPasswordEncoder.getInstance();    // сейчас пока пароль не шифруем
     }
 }
