@@ -26,7 +26,7 @@ public class User {
     @Column
     private String password;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER) // FetchType.EAGER - по умолчанию будет LAZY и сессия закроется до того,как мы прложим в контейнер List <Role>
     @JoinTable(
             name = "user_role",
             joinColumns = {@JoinColumn(name = "user_id")},        // показываем, с помощью какого столбца таблица user_role связана с таблицей user
