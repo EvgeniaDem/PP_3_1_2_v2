@@ -11,10 +11,16 @@ import ru.kata.spring.boot_security.demo.security.UserDetail;
 @RequestMapping("/api")
 public class UserController {
 
-    @GetMapping("/hello")
+    @GetMapping("/create")
     public String hello() {
         return "hello world";
     }
+
+    @GetMapping("/hello")
+    public String hello1() {
+        return "hello shrsx";
+    }
+
 
     @GetMapping("/showUserInfo")
     public String showUserInfo() {     // получаем объект Authentification из потока (т.е. юзера, успешно прошедшего аутентификацию)
@@ -22,5 +28,10 @@ public class UserController {
         UserDetail userDetail = (UserDetail) authentication.getPrincipal();  // получаем Principal (данные пользователя) из объекта Authentification
         System.out.println("User: " + userDetail.getUser());                            // downcasting (UserDerail) - т.к. в UserDetails есть метод getUser
         return "hello";
+    }
+
+    @GetMapping("/login")          // добавила я
+    public String loginPage() {
+        return "login";
     }
 }
