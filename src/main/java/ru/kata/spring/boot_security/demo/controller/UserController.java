@@ -1,43 +1,105 @@
 package ru.kata.spring.boot_security.demo.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.security.UserDetail;
+import ru.kata.spring.boot_security.demo.service.UserService;
 
-@RestController                                                                                  // combines @Controller and @ResponseBody
-@RequestMapping("/api")
+import java.sql.SQLException;
+
+@Controller
+@RequestMapping("/user")
 public class UserController {
 
-    @GetMapping("/create")
-    public String hello() {
-        return "hello world";
+    @Autowired
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    @GetMapping("/hello")
-    public String hello1() {
-        return "hello everybody!";
-    }
-
-
-    @GetMapping("/showUserInfo")
-    public String showUserInfo() {                                                                 // получаем объект Authentification из потока (т.е. юзера, успешно прошедшего аутентификацию)
+    @GetMapping
+    public String showUserInfo(Model model) {                                                                 // получаем объект Authentification из потока (т.е. юзера, успешно прошедшего аутентификацию)
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();    // т.е. мы доставем его из поктока методом getContext()
         UserDetail userDetail = (UserDetail) authentication.getPrincipal();                        // получаем Principal (данные пользователя) из объекта Authentification
+        User user = userDetail.getUser();
+        model.addAttribute("user", userService.getUserById(user.getId()));
         System.out.println("User: " + userDetail.getUser());                                       // downcasting (UserDerail) - т.к. в UserDetails есть метод getUser
-        return "hello";
+        return "/user/show";
     }
 
-    // метод для регистрации нового пользователя (добавление в таблицу)
+    @GetMapping("/edit")
+    public String showEditForm(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();    // т.е. мы доставем его из поктока методом getContext()
+        UserDetail userDetail = (UserDetail) authentication.getPrincipal();                        // получаем Principal (данные пользователя) из объекта Authentification
+        User user = userDetail.getUser();
+        model.addAttribute("user", userService.getUserById(user.getId()));
+        return "/user/edit";
+    }
 
-    @GetMapping("/login")                                                                       // Метод для аутентификции пользовател. Добавила я
+    @PatchMapping
+    public String editUserById(@ModelAttribute("user") User user) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();    // т.е. мы доставем его из поктока методом getContext()
+        UserDetail userDetail = (UserDetail) authentication.getPrincipal();                        // получаем Principal (данные пользователя) из объекта Authentification
+        User currentUser = userDetail.getUser();
+        userService.updateUserById(currentUser.getId(), user);
+        return "redirect:/user";
+    }
+
+    @GetMapping("/all")
+    public String getAllUsers(Model model) {
+        model.addAttribute("users", userService.getAllUsers());
+        return "/user/user";
+    }
+
+    @GetMapping("/{id}")
+    public String showUserById(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("user", userService.getUserById(id));                                             // "user" - это ключ
+        return "user/show";
+    }
+
+    @GetMapping("/new")
+    public String createNewUserForm(Model model) {
+        model.addAttribute("user", new User());
+        return "/user/new";
+    }
+
+    @PostMapping()
+    public String createNewUser(@ModelAttribute("user") User user) throws SQLException {
+        System.out.println("creating check2");
+        userService.saveUser(user);
+        return "redirect:/user";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String showEditForm(Model model, @PathVariable("id") Long id) throws SQLException {
+        model.addAttribute("user", userService.getUserById(id));
+        return "user/edit";
+    }
+
+    @PatchMapping("/{id}")
+    public String editUserById(@ModelAttribute("user") User user, @PathVariable("id") Long id) {
+        userService.updateUserById(id, user);
+        return "redirect:/user";
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteUserById(@PathVariable("id") Long id) {
+        userService.deleteUserById(id);
+        return "redirect:/user";
+    }
+
+
+
+    @GetMapping("/login")
+    //добавила метод для аутентификции пользователя
     public String loginPage() {
-        return "login";
+        return "auth/login";
     }
-@GetMapping("/admin")
-    public String adminPage(){
-        return "admin";
-    }
+
 }

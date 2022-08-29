@@ -21,8 +21,8 @@ public class Role implements GrantedAuthority {
     @Column
     private String role;
 
-    @ManyToMany(mappedBy = "roles")
-    private List<User> users;                                                                // это значит, что у каждой роли может быть много (List) юзеров
+/*    @ManyToMany(mappedBy = "roles")
+    private List<User> users; */                                                                                           // это значит, что у каждой роли может быть много (List) юзеров
 
 /*    @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
@@ -32,12 +32,13 @@ public class Role implements GrantedAuthority {
     )
     private List<User> roles;*/
 
-    public void addUserToRole(User user) {
+
+/*    public void addUserToRole(User user) {
         if (users == null) {
             users = new ArrayList<>();
         }
         users.add(user);
-    }
+    }*/
 
     @Override
     public String getAuthority() {

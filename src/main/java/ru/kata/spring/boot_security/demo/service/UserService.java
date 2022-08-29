@@ -8,9 +8,9 @@ import java.util.List;
 public interface UserService {
     List<User> getAllUsers();
 
-    User getUserById(Long id) throws SQLException;
+    User getUserById(Long id);
 
-    void saveUser(User user) throws SQLException;
+    void saveUser(User user);
 
     User updateUserById(Long id, User updatedUser);
 

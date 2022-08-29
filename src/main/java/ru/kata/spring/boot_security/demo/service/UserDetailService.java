@@ -12,7 +12,7 @@ import ru.kata.spring.boot_security.demo.security.UserDetail;
 import java.util.Optional;
 
 @Service
-public class UserDetailService implements UserDetailsService {           // я добавила этот класс
+public class UserDetailService implements UserDetailsService {                                                           // я добавила этот класс
     private final UsersRepository usersRepository;
 
     @Autowired
@@ -24,7 +24,7 @@ public class UserDetailService implements UserDetailsService {           // я �
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> user = usersRepository.findByName(username);
 
-        if (user.isEmpty()) {       // проверяем, есть ли юзер с таким UserName
+        if (user.isEmpty()) {                                                                                            // проверяем, есть ли юзер с таким UserName
             throw new UsernameNotFoundException("User not found");
         }
         return new UserDetail(user.get());

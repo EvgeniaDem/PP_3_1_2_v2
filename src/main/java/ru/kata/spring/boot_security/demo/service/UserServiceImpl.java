@@ -41,7 +41,14 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User updateUserById(Long id, User updatedUser) {
-        return userDao.updateUserById(id, updatedUser);
+        try {
+            User user = userDao.getUserById(id);
+            user.setName(updatedUser.getName());
+            user.setSurname(updatedUser.getSurname());
+            return userDao.updateUserById(id, user);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Transactional

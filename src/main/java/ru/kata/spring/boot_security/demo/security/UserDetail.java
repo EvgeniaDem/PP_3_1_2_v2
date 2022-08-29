@@ -4,12 +4,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
+import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 
-public class UserDetail implements UserDetails { // это - класс-обертка над классом User, позволяет работать не напрямую с User. Но этот класс предоставляет всю инфу о User
+public class UserDetail implements UserDetails {                                                                         // это класс-обертка над классом User, позволяет работать не напрямую с User. Но этот класс предоставляет всю инфу о User
     private final User user;
 
     public UserDetail(User user) {
@@ -17,9 +17,15 @@ public class UserDetail implements UserDetails { // это - класс-обер
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {                                         //Spring Security не различает ROLE и Authorities
-        return null;
-        //return Collections.singletonList(new SimpleGrantedAuthority(user.getRoles()));
+    public Collection<? extends GrantedAuthority> getAuthorities() {                                                     //Spring Security не различает ROLE и Authorities
+
+        Set<Role> roles = user.getRoles();
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        for (Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.getAuthority()));
+        }
+
+        return authorities;
     }
 
     @Override
@@ -33,26 +39,26 @@ public class UserDetail implements UserDetails { // это - класс-обер
     }
 
     @Override
-    public boolean isAccountNonExpired() {               // проверяем, не просрочен ли аккаунт
+    public boolean isAccountNonExpired() {                                                                               // проверяем, не просрочен ли аккаунт
         return true;
     }
 
     @Override
-    public boolean isAccountNonLocked() {                // проверяем, не заблокирован ли аккаунт
+    public boolean isAccountNonLocked() {                                                                                // проверяем, не заблокирован ли аккаунт
         return true;
     }
 
     @Override
-    public boolean isCredentialsNonExpired() {           // проверяем, не просрочен ли пароль
+    public boolean isCredentialsNonExpired() {                                                                           // проверяем, не просрочен ли пароль
         return true;
     }
 
     @Override
-    public boolean isEnabled() {                         // проверяем, включен ли аккаунт
+    public boolean isEnabled() {                                                                                         // проверяем, включен ли аккаунт
         return true;
     }
 
-    public User getUser(){       // добавили вручную метод, позволяющий получать доступ к аутентифицированному юзеру, и всем его полям
+    public User getUser() {       // добавила вручную метод, позволяющий получать доступ к аутентифицированному юзеру, и всем его полям
         return this.user;
     }
 }
