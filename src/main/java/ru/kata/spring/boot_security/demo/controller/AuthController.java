@@ -1,3 +1,4 @@
+/*
 package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.stereotype.Controller;
@@ -17,9 +18,11 @@ public class AuthController {
 
 
     // метод для регистрации нового пользователя (добавление в таблицу)
-/*    @GetMapping("/registration")
+    @GetMapping("/registration")
     public String registrationPage(@ModelAttribute("user") User user) {
         return "auth/registration";
-    }*/
+    }
+
 
 }
+*/

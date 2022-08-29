@@ -1,6 +1,7 @@
 package ru.kata.spring.boot_security.demo.security;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.User;
@@ -16,8 +17,9 @@ public class UserDetail implements UserDetails { // это - класс-обер
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {  //Spring Security не различает ROLE и Authorities
+    public Collection<? extends GrantedAuthority> getAuthorities() {                                         //Spring Security не различает ROLE и Authorities
         return null;
+        //return Collections.singletonList(new SimpleGrantedAuthority(user.getRoles()));
     }
 
     @Override

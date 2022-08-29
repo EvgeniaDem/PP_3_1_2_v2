@@ -11,9 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Set;
 
-@Slf4j
+@Slf4j                                                                                             // аннотация для логирования (чтобы не писать спец.код)
 @Component
-public class SuccessUserHandler implements AuthenticationSuccessHandler {
+public class SuccessUserHandler implements AuthenticationSuccessHandler {                          // интерфейс определяет кого куда направлять после успешной аутентификации
     // Spring Security использует объект Authentication, пользователя авторизованной сессии.
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException {
