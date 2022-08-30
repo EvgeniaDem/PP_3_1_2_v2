@@ -4,13 +4,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-@Data                                                                                                                    // для каждого поля создаст getters & setters + метод toString + equals() + hashCode()
-@Entity                                                                                                                  // означает, что данный клас является сущностью (в отличии от join-таблицы!)
+@Data
+// для каждого поля создаст getters & setters + метод toString + equals() + hashCode()
+@Entity
+// означает, что данный клас является сущностью (в отличии от join-таблицы!)
 @NoArgsConstructor
 @Table(name = "users")
 public class User {
@@ -19,7 +19,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(unique = true)
     private String name;
 
     @Column
@@ -28,7 +28,8 @@ public class User {
     @Column
     private String password;
 
-    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)                        // посмотреть не Cascade all                                             // FetchType.EAGER - по умолчанию будет LAZY и сессия закроется до того,как мы прложим в контейнер List <Role>
+    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    // посмотреть не Cascade all                                             // FetchType.EAGER - по умолчанию будет LAZY и сессия закроется до того,как мы прложим в контейнер List <Role>
     @JoinTable(
             name = "user_role",
             joinColumns = {@JoinColumn(name = "user_id")},                                                               // показываем, с помощью какого столбца таблица user_role связана с таблицей user
