@@ -24,12 +24,12 @@ public class UserController {
     }
 
     @GetMapping
-    public String showUserInfo(Model model) {                                                                 // получаем объект Authentification из потока (т.е. юзера, успешно прошедшего аутентификацию)
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();    // т.е. мы доставем его из поктока методом getContext()
-        UserDetail userDetail = (UserDetail) authentication.getPrincipal();                        // получаем Principal (данные пользователя) из объекта Authentification
+    public String showUserInfo(Model model) {                                                                            // получаем объект Authentification из потока (т.е. юзера, успешно прошедшего аутентификацию)
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();                          // т.е. мы доставем его из поктока методом getContext()
+        UserDetail userDetail = (UserDetail) authentication.getPrincipal();                                              // получаем Principal (данные пользователя) из объекта Authentification
         User user = userDetail.getUser();
         model.addAttribute("user", userService.getUserById(user.getId()));
-        System.out.println("User: " + userDetail.getUser());                                       // downcasting (UserDerail) - т.к. в UserDetails есть метод getUser
+        System.out.println("User: " + userDetail.getUser());                                                             // downcasting (UserDerail) - т.к. в UserDetails есть метод getUser
         return "/user/show";
     }
 
@@ -51,33 +51,20 @@ public class UserController {
         return "redirect:/user";
     }
 
-    @GetMapping("/all")
-    public String getAllUsers(Model model) {
-        model.addAttribute("users", userService.getAllUsers());
-        return "/user/user";
-    }
-
-    @GetMapping("/{id}")
-    public String showUserById(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("user", userService.getUserById(id));                                             // "user" - это ключ
-        return "user/show";
-    }
-
-    @GetMapping("/new")
+/*    @GetMapping("/new")
     public String createNewUserForm(Model model) {
         model.addAttribute("user", new User());
         return "/user/new";
     }
 
     @PostMapping()
-    public String createNewUser(@ModelAttribute("user") User user) throws SQLException {
-        System.out.println("creating check2");
+    public String createNewUser(@ModelAttribute("user") User user) {
         userService.saveUser(user);
         return "redirect:/user";
-    }
-
+    }*/
+/*
     @GetMapping("/{id}/edit")
-    public String showEditForm(Model model, @PathVariable("id") Long id) throws SQLException {
+    public String showEditForm(Model model, @PathVariable("id") Long id)  {
         model.addAttribute("user", userService.getUserById(id));
         return "user/edit";
     }
@@ -86,20 +73,19 @@ public class UserController {
     public String editUserById(@ModelAttribute("user") User user, @PathVariable("id") Long id) {
         userService.updateUserById(id, user);
         return "redirect:/user";
-    }
+    }*/
 
-    @DeleteMapping("/{id}")
+/*    @DeleteMapping("/{id}")
     public String deleteUserById(@PathVariable("id") Long id) {
         userService.deleteUserById(id);
         return "redirect:/user";
-    }
+    }*/
 
 
-
-    @GetMapping("/login")
+/*    @GetMapping("/login")
     //добавила метод для аутентификции пользователя
     public String loginPage() {
         return "auth/login";
-    }
+    }*/
 
 }

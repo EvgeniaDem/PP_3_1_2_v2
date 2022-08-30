@@ -15,11 +15,6 @@ public class AuthController {
         return "/auth/login";
     }
 
-/*    @PostMapping("/process_login")
-    public String processLogin(){
-
-    }*/
-
     // метод для регистрации нового пользователя (добавление в таблицу)
     @GetMapping("/registration")
     public String registrationPage(@ModelAttribute("user") User user) {
