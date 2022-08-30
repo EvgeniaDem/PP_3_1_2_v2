@@ -33,7 +33,7 @@ public class UserController {
         return "/user/show";
     }
 
-    @GetMapping("/edit")
+/*    @GetMapping("/edit")
     public String showEditForm(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();    // т.е. мы доставем его из поктока методом getContext()
         UserDetail userDetail = (UserDetail) authentication.getPrincipal();                        // получаем Principal (данные пользователя) из объекта Authentification
@@ -49,7 +49,7 @@ public class UserController {
         User currentUser = userDetail.getUser();
         userService.updateUserById(currentUser.getId(), user);
         return "redirect:/user";
-    }
+    }*/
 
 /*    @GetMapping("/new")
     public String createNewUserForm(Model model) {
@@ -62,20 +62,17 @@ public class UserController {
         userService.saveUser(user);
         return "redirect:/user";
     }*/
-/*
-    @GetMapping("/{id}/edit")
+/*    @GetMapping("/{id}/edit")
     public String showEditForm(Model model, @PathVariable("id") Long id)  {
         model.addAttribute("user", userService.getUserById(id));
         return "user/edit";
-    }
+    }*/
 
-    @PatchMapping("/{id}")
+/*    @PatchMapping("/{id}")
     public String editUserById(@ModelAttribute("user") User user, @PathVariable("id") Long id) {
         userService.updateUserById(id, user);
         return "redirect:/user";
-    }*/
-
-/*    @DeleteMapping("/{id}")
+    }*//*    @DeleteMapping("/{id}")
     public String deleteUserById(@PathVariable("id") Long id) {
         userService.deleteUserById(id);
         return "redirect:/user";

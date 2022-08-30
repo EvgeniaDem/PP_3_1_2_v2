@@ -49,26 +49,27 @@ public class AdminController {
     @PostMapping()
     public String createNewUser(@ModelAttribute("user") User user) {
         userService.saveUser(user);
-        return "redirect:/user";
+        return "redirect:/admin/all";
     }
 
     // Работает
     @GetMapping("/{id}/edit")
     public String showEditForm(Model model, @PathVariable("id") Long id) {
         model.addAttribute("user", userService.getUserById(id));
-        return "admin/edit";
+        return "/admin/edit";
     }
 
-    // работает, но возвращает не на ту страницу (всегда на админа)
+    // не работает (работает только когда есть метот в UserController)
     @PatchMapping("/{id}")
     public String editUserById(@ModelAttribute("user") User user, @PathVariable("id") Long id) {
         userService.updateUserById(id, user);
-        return "redirect:/user";
+        return "redirect:/admin/all";
     }
+
     // работает, но возвращает не на ту страницу (всегда на админа) + админа удалить не могу!
     @DeleteMapping("/{id}")
     public String deleteUserById(@PathVariable("id") Long id) {
         userService.deleteUserById(id);
-        return "redirect:/user";
+        return "redirect:/admin/all";
     }
 }
