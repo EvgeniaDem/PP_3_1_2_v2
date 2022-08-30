@@ -6,10 +6,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.Set;
 
-@Data
-// для каждого поля создаст getters & setters + метод toString + equals() + hashCode()
+@Data                                                                                                                    // для каждого поля создаст getters & setters + метод toString + equals() + hashCode()
 @Entity
-// означает, что данный клас является сущностью (в отличии от join-таблицы!)
 @NoArgsConstructor
 @Table(name = "users")
 public class User {
@@ -27,19 +25,11 @@ public class User {
     @Column
     private String password;
 
-    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-    // посмотреть не Cascade all                                             // FetchType.EAGER - по умолчанию будет LAZY и сессия закроется до того,как мы прложим в контейнер List <Role>
+    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)                                                  // FetchType.EAGER - по умолчанию будет LAZY и сессия закроется до того,как мы прложим в контейнер List <Role>
     @JoinTable(
             name = "user_role",
             joinColumns = {@JoinColumn(name = "user_id")},                                                               // показываем, с помощью какого столбца таблица user_role связана с таблицей user
             inverseJoinColumns = {@JoinColumn(name = "role_id")}                                                         // показываем, с помощью какого столбца таблица user_role связана с таблицей role
     )
-    private Set<Role> roles;                                                                                            // означает, что у каждого юзера может быть List ролей
-
-/*    public void addRoleToUser(Role role) {
-        if (roles == null) {
-            roles = new HashSet<>();
-        }
-        roles.add(role);
-    }*/
+    private Set<Role> roles;                                                                                             // означает, что у каждого юзера может быть Set ролей
 }

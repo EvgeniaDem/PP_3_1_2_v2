@@ -10,10 +10,17 @@ import ru.kata.spring.boot_security.demo.model.User;
 @RequestMapping("/auth")
 public class AuthController {
 
-    @GetMapping("/login")             // Метод для моей формы аутентификции пользователя (не спринговой)
+    @GetMapping("/login")
     public String loginPage() {
         return "/auth/login";
     }
+
+    // метод для кастомного login
+    @GetMapping("/logout")
+    public String logoutPage(){
+        return "/auth/logout";
+    }
+
 
     // метод для регистрации нового пользователя (добавление в таблицу)
     @GetMapping("/registration")
