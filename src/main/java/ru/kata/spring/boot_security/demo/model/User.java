@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -37,10 +36,10 @@ public class User {
     )
     private Set<Role> roles;                                                                                            // означает, что у каждого юзера может быть List ролей
 
-    public void addRoleToUser(Role role) {
+/*    public void addRoleToUser(Role role) {
         if (roles == null) {
             roles = new HashSet<>();
         }
         roles.add(role);
-    }
+    }*/
 }
