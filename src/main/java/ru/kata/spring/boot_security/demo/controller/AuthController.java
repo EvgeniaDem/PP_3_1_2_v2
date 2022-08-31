@@ -17,7 +17,7 @@ public class AuthController {
 
     // метод для кастомного login
     @GetMapping("/logout")
-    public String logoutPage(){
+    public String logoutPage() {
         return "/auth/logout";
     }
 
@@ -26,6 +26,4 @@ public class AuthController {
     public String registrationPage(@ModelAttribute("user") User user) {
         return "/auth/registration";
     }
-
-
 }

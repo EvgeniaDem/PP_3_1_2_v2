@@ -37,7 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user", "/user/**").hasAnyRole("ADMIN", "USER")
                 .antMatchers( "/auth/**", "/**").permitAll()                                                   // устанавливаем end points, с которых должен быть доступен всем без пароля
                 .anyRequest().hasAnyRole("USER", "ADMIN")                                                          // даем доступ ко всем остальным страницам как USer-у, так и админу
-                .and()                                                                                                   // до and() настраивается авторизация, после end() настраивается страница login
+                .and()                                                                                                   // до and() настраивается авторизация, после and() настраивается страница login
                 .formLogin().successHandler(loginSuccessHandler)                                                         // настраиваем свою форму для пользователя
                 .permitAll()
                 .and()
