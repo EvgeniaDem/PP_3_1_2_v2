@@ -34,9 +34,14 @@ public class UserDetail implements UserDetails {                                
         return this.user.getPassword();
     }
 
+ /*   @Override
+    public String getUsername() {
+        return this.user.getName();             // в прошлой задаче был этот метод, т.к. был вход по name
+    }*/
+
     @Override
     public String getUsername() {
-        return this.user.getName();
+        return this.user.getPassword();             // заменила getName на getPassword
     }
 
     @Override

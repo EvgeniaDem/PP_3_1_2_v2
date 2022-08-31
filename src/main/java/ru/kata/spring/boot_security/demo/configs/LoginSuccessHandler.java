@@ -21,8 +21,10 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         log.info("roles: {}", roles);
         if (roles.contains("ROLE_ADMIN")) {
             response.sendRedirect("/admin");
-        } else {
+        } else if (roles.contains("ROLE_USER")) {
             response.sendRedirect("/user");
+        } else {
+            response.sendRedirect("/auth/login");
         }
     }
 }

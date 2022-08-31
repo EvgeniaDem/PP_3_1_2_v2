@@ -43,8 +43,10 @@ public class UserServiceImpl implements UserService {
     public User updateUserById(Long id, User updatedUser) {
         try {
             User user = userDao.getUserById(id);
-            user.setName(updatedUser.getName());
-            user.setSurname(updatedUser.getSurname());
+            user.setFirstName(updatedUser.getFirstName());
+            user.setLastName(updatedUser.getLastName());
+            user.setAge(updatedUser.getAge());
+            user.setPassword(updatedUser.getPassword());
             return userDao.updateUserById(id, user);
         } catch (SQLException e) {
             throw new RuntimeException(e);

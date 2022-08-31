@@ -4,8 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
+
+import java.util.Set;
 
 @Controller
 @RequestMapping("/admin")
@@ -14,9 +17,23 @@ public class AdminController {
     @Autowired
     private final UserService userService;
 
+    // добавила как у Андрея - разобраться, откуда это?
+/*    @Autowired
+    private RoleService roleService;*/
+
     public AdminController(UserService userService) {
         this.userService = userService;
     }
+
+/*    public AdminController(UserService userService, RoleService roleService) {
+        this.userService = userService;
+        this.roleService = roleService;
+    } */
+
+    // добавила как у Андрея - разобраться, откуда это?
+/*    @ModelAttribute("roles")    // наверное, надо добавить /
+    public Set<Role> roles() {
+        return roleService.getAll();*/
 
     @GetMapping
     public String adminPage() {

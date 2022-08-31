@@ -8,6 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface UsersRepository extends JpaRepository<User, Integer> {
-    Optional<User> findByName(String name);                                                                              // передаем имя юзера, и Data JPA возвращает пользователя по этому имени из БД
+    Optional<User> findByEmail(String name);                                                                              // передаем имя юзера, и Data JPA возвращает пользователя по этому имени из БД
 }                                                                                                                        // Optional означает, что такой человек может быть найден, а может и не быть найден
-                                                                                                                         // Важно: метод findByName = findByНазвание поля!!! Строго название поля (у меня поле name)
+                                                                                                                         // Важно: метод findByEmail = findByНазвание поля!!! Строго название поля (у меня поле email)
