@@ -1,7 +1,6 @@
 package ru.kata.spring.boot_security.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.dao.UserDao;
@@ -14,9 +13,6 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @Override
     public List<User> getAllUsers() {
@@ -36,7 +32,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void saveUser(User user) {
         try {
-            //user.setPassword(passwordEncoder.encode(user.getPassword()));
             userDao.saveUser(user);
         } catch (SQLException e) {
             throw new RuntimeException(e);

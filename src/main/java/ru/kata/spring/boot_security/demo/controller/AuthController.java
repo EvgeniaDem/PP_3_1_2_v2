@@ -21,7 +21,6 @@ public class AuthController {
         return "/auth/logout";
     }
 
-
     // метод для регистрации нового пользователя (добавление в таблицу)
     @GetMapping("/registration")
     public String registrationPage(@ModelAttribute("user") User user) {

@@ -3,14 +3,16 @@ package ru.kata.spring.boot_security.demo.security;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
-public class UserDetail implements UserDetails {                                                                         // это класс-обертка над классом User, позволяет работать не напрямую с User. Но этот класс предоставляет всю инфу о User
-    private final User user;
+public class UserDetail implements UserDetails {                                                                         // это класс-обертка над классом User, позволяет работать не напрямую с User.
+    private final User user;                                                                                             // Но этот класс предоставляет всю инфу о User
 
     public UserDetail(User user) {
         this.user = user;
@@ -24,7 +26,6 @@ public class UserDetail implements UserDetails {                                
         for (Role role : roles) {
             authorities.add(new SimpleGrantedAuthority(role.getAuthority()));
         }
-
         return authorities;
     }
 
@@ -58,7 +59,7 @@ public class UserDetail implements UserDetails {                                
         return true;
     }
 
-    public User getUser() {       // добавила вручную метод, позволяющий получать доступ к аутентифицированному юзеру, и всем его полям
+    public User getUser() {                                                                                              // добавила вручную метод, позволяющий получать доступ к аутентифицированному юзеру, и всем его полям
         return this.user;
     }
 }
