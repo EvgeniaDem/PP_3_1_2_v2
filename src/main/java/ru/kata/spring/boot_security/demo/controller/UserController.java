@@ -27,7 +27,7 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();                          // мы достаем его из потока методом getContext()
         UserDetail userDetail = (UserDetail) authentication.getPrincipal();                                              // получаем Principal (данные пользователя) из объекта Authentification
         User user = userDetail.getUser();                                                                                // downcasting (UserDerail) - т.к. в UserDetails есть метод getUser
-        model.addAttribute("user", userService.getUserById(user.getId()));
+        model.addAttribute("currentUser", userService.getUserById(user.getId()));
         System.out.println("User: " + userDetail.getUser());
         return "/user/show";
     }

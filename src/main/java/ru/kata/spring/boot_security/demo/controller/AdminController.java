@@ -1,11 +1,14 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.security.UserDetail;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.util.Set;
@@ -17,26 +20,13 @@ public class AdminController {
     @Autowired
     private final UserService userService;
 
-    // добавила как у Андрея - разобраться, откуда это?
-/*    @Autowired
-    private RoleService roleService;*/
-
     public AdminController(UserService userService) {
         this.userService = userService;
     }
 
-/*    public AdminController(UserService userService, RoleService roleService) {
-        this.userService = userService;
-        this.roleService = roleService;
-    } */
-
-    // добавила как у Андрея - разобраться, откуда это?
-/*    @ModelAttribute("roles")    // наверное, надо добавить /
-    public Set<Role> roles() {
-        return roleService.getAll();*/
-
     @GetMapping
-    public String adminPage() {
+    public String adminPage(Model model) {
+        addCurrentUser(model);
         return "/admin/index";
     }
 
@@ -80,5 +70,11 @@ public class AdminController {
     public String deleteUserById(@PathVariable("id") Long id) {
         userService.deleteUserById(id);
         return "redirect:/admin/all";
+    }
+
+    private void addCurrentUser(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();                          // мы достаем его из потока методом getContext()
+        UserDetail userDetail = (UserDetail) authentication.getPrincipal();                                              // получаем Principal (данные пользователя) из объекта Authentification
+        model.addAttribute("currentUser", userDetail.getUser());
     }
 }

@@ -6,10 +6,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 public class UserDetail implements UserDetails {                                                                         // это класс-обертка над классом User, позволяет работать не напрямую с User.
     private final User user;                                                                                             // Но этот класс предоставляет всю инфу о User
@@ -20,13 +18,17 @@ public class UserDetail implements UserDetails {                                
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {                                                     //Spring Security не различает ROLE и Authorities
-
-        Set<Role> roles = user.getRoles();
+/*
+        List<Role> roles = user.getRoles();
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         for (Role role : roles) {
             authorities.add(new SimpleGrantedAuthority(role.getAuthority()));
         }
-        return authorities;
+        return authorities;*/
+        return user.getRoles().stream()
+                .map(Role::getAuthority)
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -34,14 +36,9 @@ public class UserDetail implements UserDetails {                                
         return this.user.getPassword();
     }
 
- /*   @Override
-    public String getUsername() {
-        return this.user.getName();             // в прошлой задаче был этот метод, т.к. был вход по name
-    }*/
-
     @Override
     public String getUsername() {
-        return this.user.getPassword();             // заменила getName на getPassword
+        return this.user.getEmail();
     }
 
     @Override
@@ -67,4 +64,5 @@ public class UserDetail implements UserDetails {                                
     public User getUser() {                                                                                              // добавила вручную метод, позволяющий получать доступ к аутентифицированному юзеру, и всем его полям
         return this.user;
     }
+
 }

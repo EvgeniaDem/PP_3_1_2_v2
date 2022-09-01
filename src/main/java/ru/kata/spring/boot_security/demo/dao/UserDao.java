@@ -11,6 +11,8 @@ public interface UserDao {
 
     User getUserById(Long id) throws SQLException;
 
+    User getUserByEmail(String email);
+
     void saveUser(User user) throws SQLException;
 
     User updateUserById(Long id, User updatedUser);

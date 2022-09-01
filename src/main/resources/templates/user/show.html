@@ -1,16 +1,23 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
-<head>
+<head th:insert="fragments/bootstrap::bootstrap">
     <meta charset="UTF-8">
     <title>User</title>
 </head>
 <body>
 
-<p th:text="${user.getId()} + ' ' + ${user.getName()} + ' '+${user.getSurname()} ">VALUE</p>
+<div class="container-fluid">
+    <nav th:replace="fragments/navbar::navbar"></nav>
+    <div class="row">
+        <div th:replace="fragments/panel::panel"></div>
+        <div class="col-10 bg-light">
+            <p th:text="${currentUser.getId()} + ' ' + ${currentUser.getFirstName()} + ' '+${currentUser.getLastName()} ">
+                VALUE</p>
+        </div>
+    </div>
 
-<br/>
-<hr/>
+    <br/>
 
-<div th:insert="fragments/logout :: logout"></div>
+</div>
 </body>
 </html>

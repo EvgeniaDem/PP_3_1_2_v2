@@ -6,27 +6,30 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.repositories.UsersRepository;
+import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 import ru.kata.spring.boot_security.demo.security.UserDetail;
 
 import java.util.Optional;
 
 @Service
 public class UserDetailService implements UserDetailsService {
-    private final UsersRepository usersRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public UserDetailService(UsersRepository usersRepository) {
-        this.usersRepository = usersRepository;
+    public UserDetailService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = usersRepository.findByEmail(username);
-
+/*       Optional<User> user = userRepository.findByEmail(username);
         if (user.isEmpty()) {                                                                                            // проверяем, есть ли в БД юзер с таким UserName
             throw new UsernameNotFoundException("User not found");
         }
-        return new UserDetail(user.get());
+        return new UserDetail(user.get());*/
+
+        return userRepository.findByEmail(username)
+                .map(UserDetail::new)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }

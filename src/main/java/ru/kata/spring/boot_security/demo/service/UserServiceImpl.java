@@ -1,8 +1,10 @@
 package ru.kata.spring.boot_security.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.kata.spring.boot_security.demo.dao.RoleDao;
 import ru.kata.spring.boot_security.demo.dao.UserDao;
 import ru.kata.spring.boot_security.demo.model.User;
 
@@ -10,9 +12,16 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Service
+@Transactional                                                 // добавила как у Андрея
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private RoleDao roleDao;                                  // добавила как у Андрея
+
+/*    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;            // добавила как у Андрея*/
 
     @Override
     public List<User> getAllUsers() {
@@ -46,7 +55,7 @@ public class UserServiceImpl implements UserService {
             user.setFirstName(updatedUser.getFirstName());
             user.setLastName(updatedUser.getLastName());
             user.setAge(updatedUser.getAge());
-            user.setPassword(updatedUser.getPassword());
+            //user.setPassword(updatedUser.getPassword());
             return userDao.updateUserById(id, user);
         } catch (SQLException e) {
             throw new RuntimeException(e);
