@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Data                                                                                                                    // для каждого поля создаст getters & setters + метод toString + equals() + hashCode()
 @Entity
@@ -31,5 +31,5 @@ public class User {
             joinColumns = {@JoinColumn(name = "user_id")},                                                               // показываем, с помощью какого столбца таблица user_role связана с таблицей user
             inverseJoinColumns = {@JoinColumn(name = "role_id")}                                                         // показываем, с помощью какого столбца таблица user_role связана с таблицей role
     )
-    private Set<Role> roles;                                                                                             // означает, что у каждого юзера может быть Set ролей
+    private List<Role> roles;                                                                                             // означает, что у каждого юзера может быть Set ролей
 }
