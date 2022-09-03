@@ -6,12 +6,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.security.UserDetail;
 import ru.kata.spring.boot_security.demo.service.UserService;
-
-import java.util.Set;
 
 @Controller
 @RequestMapping("/admin")
@@ -26,14 +23,16 @@ public class AdminController {
 
     @GetMapping
     public String adminPage(Model model) {
-        addCurrentUser(model);
+        UserDetail user = getPrincipal();
+        model.addAttribute("currentUser", user.getUser());
         return "/admin/index";
     }
 
     @GetMapping("/all")
     public String getAllUsers(Model model) {
         model.addAttribute("users", userService.getAllUsers());
-        return "/admin/user";
+        //return "/admin/user"; - в задаче без bootstrap был этот вариант
+        return "/admin/index";
     }
 
     @GetMapping("/{id}")
@@ -66,15 +65,21 @@ public class AdminController {
         return "redirect:/admin/all";
     }
 
+    // добавила метод
+    @GetMapping("/{id}/delete")
+    public String showDeleteForm(Model model, @PathVariable("id") Long id) {
+        model.addAttribute("user", userService.getUserById(id));
+        return "/admin/delete";
+    }
+
     @DeleteMapping("/{id}")
     public String deleteUserById(@PathVariable("id") Long id) {
         userService.deleteUserById(id);
         return "redirect:/admin/all";
     }
 
-    private void addCurrentUser(Model model) {
+    private UserDetail getPrincipal() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();                          // мы достаем его из потока методом getContext()
-        UserDetail userDetail = (UserDetail) authentication.getPrincipal();                                              // получаем Principal (данные пользователя) из объекта Authentification
-        model.addAttribute("currentUser", userDetail.getUser());
+        return (UserDetail) authentication.getPrincipal();
     }
 }

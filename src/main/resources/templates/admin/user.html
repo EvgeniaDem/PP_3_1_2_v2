@@ -1,23 +1,52 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
-<head>
+<head th:insert="fragments/bootstrap::bootstrap">
     <meta charset="UTF-8">
-    <title>All users</title>
+    <title>User</title>
 </head>
 <body>
-<div th:each="user : ${users}">
-    <a th:href="@{/admin/{id}(id=${currentUser.getId()})}" th:text="${currentUser.getFirstName()} +' '+ ${currentUser.getLastSurname()} ">user</a>
+
+<div class="container-fluid">
+    <nav th:replace="fragments/navbar::navbar"></nav>
+    <div class="row">
+        <div th:replace="fragments/panel::panel"></div>
+        <div class="col-10 bg-light">
+
+
+            <div th:if="${currentUser.isUser()}" th:class="'tab-pane fade' + ${currentUser.isAdmin() ? '' : ' show active'}" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+
+                <h1>User information-page</h1>
+                <table class="table table-striped"> <!--ВЫВОД ИНФЫ ЮЗЕРА-->
+                    <div class="card-header"><h5><b>About user</b></h5></div>
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Age</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td th:text="${currentUser.id}">ID</td>
+                        <td th:text="${currentUser.firstName}">First Name</td>
+                        <td th:text="${currentUser.lastName}">Last Name</td>
+                        <td th:text="${currentUser.age}">Age</td>
+                        <td th:text="${currentUser.email}">Email</td>
+                        <td th:text="${#strings.listJoin(currentUser.roles,' ')}">Role</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+    <br/>
+
 </div>
 
-<br/>
-<hr/>
-
-<a href="/admin/new">Create new User</a>
-
-
-<br/>
-<hr/>
-
-<div th:insert="fragments/logout :: logout"></div>
 </body>
 </html>
