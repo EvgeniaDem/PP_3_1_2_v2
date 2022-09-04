@@ -10,6 +10,9 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Table(name = "users")
+// используем для сохранения lazy initialisation
+@NamedEntityGraph(name = "graph.User.roles",
+        attributeNodes = @NamedAttributeNode("roles"))
 public class User {
 
     @Id
@@ -25,11 +28,12 @@ public class User {
     @Column
     private String password;
 
-    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)                                                  // указываем FetchType.EAGER, т.к. по умолчанию будет LAZY и сессия закроется до того,как мы прложим в контейнер Set <Role>
+    // by default Lazy initialisation. We use @NamedEntityGraph to fetch both an entity (User) and an association (role) before the session is closed
+    @ManyToMany(cascade = CascadeType.REFRESH)
     @JoinTable(
             name = "user_role",
             joinColumns = {@JoinColumn(name = "user_id")},                                                               // показываем, с помощью какого столбца таблица user_role связана с таблицей user
             inverseJoinColumns = {@JoinColumn(name = "role_id")}                                                         // показываем, с помощью какого столбца таблица user_role связана с таблицей role
     )
-    private List<Role> roles;                                                                                             // означает, что у каждого юзера может быть Set ролей
+    private List<Role> roles;
 }
