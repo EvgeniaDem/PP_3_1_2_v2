@@ -25,21 +25,24 @@ public class AdminController {
     public String adminPage(Model model) {
         UserDetail user = getPrincipal();
         model.addAttribute("currentUser", user.getUser());
+        model.addAttribute("users", userService.getAllUsers());
         return "/admin/index";
     }
 
-    @GetMapping("/all")
+/*    @GetMapping("/all")
     public String getAllUsers(Model model) {
+        UserDetail user = getPrincipal();
+        model.addAttribute("currentUser", user.getUser());
         model.addAttribute("users", userService.getAllUsers());
         //return "/admin/user"; - в задаче без bootstrap был этот вариант
         return "/admin/index";
-    }
+    }*/
 
-    @GetMapping("/{id}")
+/*    @GetMapping("/{id}")
     public String showUserById(@PathVariable("id") Long id, Model model) {
         model.addAttribute("user", userService.getUserById(id));                                             // "user" - это ключ
         return "/admin/show";
-    }
+    }*/
 
     @GetMapping("/new")
     public String createNewUserForm(Model model) {
@@ -62,20 +65,20 @@ public class AdminController {
     @PatchMapping("/{id}")
     public String editUserById(@ModelAttribute("user") User user, @PathVariable("id") Long id) {
         userService.updateUserById(id, user);
-        return "redirect:/admin/all";
+        return "redirect:/admin";
     }
 
     // добавила метод
-    @GetMapping("/{id}/delete")
+/*    @GetMapping("/{id}/delete")
     public String showDeleteForm(Model model, @PathVariable("id") Long id) {
         model.addAttribute("user", userService.getUserById(id));
         return "/admin/delete";
-    }
+    }*/
 
-    @DeleteMapping("/{id}")
+    @GetMapping("/{id}")
     public String deleteUserById(@PathVariable("id") Long id) {
         userService.deleteUserById(id);
-        return "redirect:/admin/all";
+        return "redirect:/admin";
     }
 
     private UserDetail getPrincipal() {

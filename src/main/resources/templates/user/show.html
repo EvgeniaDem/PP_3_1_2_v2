@@ -13,7 +13,7 @@
         <div class="col-10 bg-light">
 
 
-            <div th:if="${currentUser.isUser()}" th:class="'tab-pane fade' + ${currentUser.isAdmin() ? '' : ' show active'}" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+            <div th:if="${currentUser.isUser()}" class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
 
                 <h1>User information-page</h1>
                 <table class="table table-striped"> <!--ВЫВОД ИНФЫ ЮЗЕРА-->
